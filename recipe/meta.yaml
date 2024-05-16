@@ -14,7 +14,7 @@ source:
 
 build:
   number: 0
-  skip: true  # [(not linux) or cuda_compiler_version in (undefined, "None", "10.2")]
+  skip: true  # [(not linux) or s390x or cuda_compiler_version in (undefined, "None", "10.2")]
   ignore_run_exports_from:
     # Ignore `cudatoolkit` dependency in CUDA 11 builds
     - {{ compiler("cuda") }}  # [(cuda_compiler_version or "").startswith("11")]
