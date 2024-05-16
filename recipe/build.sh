@@ -4,6 +4,7 @@ EXTRA_ARGS="CUDARTLIB=\"cudart_static\""
 
 if [[ "${cuda_compiler_version}" =~ 12.* ]]; then
   EXTRA_ARGS="${EXTRA_ARGS} CUDA_HOME=\"${PREFIX}\" NVCC=\"${BUILD_PREFIX}/bin/nvcc\""
+  export CUDA_HOME=${BUILD_PREFIX}
 elif [[ "${cuda_compiler_version}" != "None" ]]; then
   EXTRA_ARGS="${EXTRA_ARGS} CUDA_HOME=\"${CUDA_PATH}\""
 fi
@@ -19,8 +20,8 @@ if [[ $CONDA_BUILD_CROSS_COMPILATION == "1" ]]; then
     fi
 fi
 
-# `eval` is needed here for proper `${...}` expansion
-eval make -j${CPU_COUNT} src.lib ${EXTRA_ARGS}
+# Handing CUDA_HOME to make via an environment variable works; using eval and make args doesn't.
+make -j${CPU_COUNT} src.lib
 
 make install PREFIX="${PREFIX}"
 
