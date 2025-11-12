@@ -1,5 +1,5 @@
 {% set name = "nccl" %}
-{% set version = "2.21.5-1" %}
+{% set version = "2.28.9-1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,33 +7,34 @@ package:
 
 source:
   url: https://github.com/NVIDIA/nccl/archive/v{{ version }}.tar.gz
-  sha256: 1923596984d85e310b5b6c52b2c72a1b93da57218f2bc5a5c7ac3d59297a3303
+  sha256: f349860336c6b7fb97b22bed9c729142f3531a0e82826c1204d01e44af8b9cb9
   patches:
     # This isn't needed; setting CUDA_HOME sets NVCC correctly
-    #- 0001-Allow-custom-NVCC-path.patch
-    - 0002-use-conda-ar-not-system.patch
+    - 0001-use-conda-ar-not-system.patch
 
 build:
   number: 0
-  skip: true  # [(not linux) or s390x or cuda_compiler_version in (undefined, "None", "10.2")]
-  ignore_run_exports_from:
-    # Ignore `cudatoolkit` dependency in CUDA 11 builds
-    - {{ compiler("cuda") }}  # [(cuda_compiler_version or "").startswith("11")]
+  skip: true  # [(not linux) or s390x or cuda_compiler_version in (undefined, "None")]
+  ignore_run_exports:
+    # ignore `cuda-version` constraint in CUDA 12+ as this supports CUDA Enhanced Compatibility.
+    - cuda-version
   run_exports:
     # xref: https://github.com/NVIDIA/nccl/issues/218
     - {{ pin_subpackage(name, max_pin="x") }}
 
 requirements:
   build:
+    - {{ stdlib("c") }}
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - {{ compiler("cuda") }}
     - make
     - patch
   host:
-    - cuda-version ={{ cuda_compiler_version }}          # [(cuda_compiler_version or "").startswith("11")]
+    - cuda-version ={{ cuda_compiler_version }}
   run:
-    - {{ pin_compatible("cuda-version", max_pin="x") }}  # [(cuda_compiler_version or "").startswith("11")]
+    - {{ pin_compatible("cuda-version", lower_bound="12.2a0") }}                    # [(cuda_compiler_version or "").startswith("12")]
+    - {{ pin_compatible("cuda-version", min_pin="x", max_pin="x") }}                # [(cuda_compiler_version or "").startswith("13")]
 
 test:
   commands:
@@ -60,5 +61,6 @@ about:
 
 extra:
   recipe-maintainers:
+    - conda-forge/cuda
     - jakirkham
     - leofang
