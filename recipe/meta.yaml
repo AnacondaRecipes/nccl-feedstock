@@ -17,6 +17,8 @@ build:
   ignore_run_exports:
     # ignore `cuda-version` constraint in CUDA 12+ as this supports CUDA Enhanced Compatibility.
     - cuda-version
+  ignore_run_exports_from:
+    - {{ compiler("cuda") }}
   run_exports:
     # xref: https://github.com/NVIDIA/nccl/issues/218
     - {{ pin_subpackage(name, max_pin="x") }}
