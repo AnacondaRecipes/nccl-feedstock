@@ -6,7 +6,6 @@
 #   - 7.3               # [linux]
 # cxx_compiler_version: # [linux]
 #   - 7.3               # [linux]
-cuda_compiler: cuda-nvcc
 cuda_compiler_version:
   #- 9.2
   #- 10.0
