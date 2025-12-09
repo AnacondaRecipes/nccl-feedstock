@@ -1,17 +1,23 @@
-# # cuda 8.0, gcc 5.4, cudnn 7.1
-# # cuda 9.0, gcc 5.4, cudnn 7.3
-# # cuda 9.2, gcc 7.3, cudnn 7.3
-# # cuda 10.0, gcc 7.3, cudnn 7.3
-# c_compiler_version:   # [linux]
-#   - 7.3               # [linux]
-# cxx_compiler_version: # [linux]
-#   - 7.3               # [linux]
-cuda_compiler: cuda-nvcc
+# nccl supports CUDA enhanced compatibility, but CUDA 12.4 won't support GCC >= 13
+# So, keep CUDA 12.4 for GCC 11.2.0+ compatibility
+# Use latest CUDA 12.x and 13.x for GCC 14.3.0+ compatibility
 cuda_compiler_version:
-  #- 9.2
-  #- 10.0
-  # - 10.1
-  #- 10.2
-  #- 11.0
-  #- 12.4
+  - 12.4
   - 12.8
+  - 13.0
+
+c_compiler_version:
+  - 11.2.0
+  - 14.3.0
+  - 14.3.0
+
+cxx_compiler_version:
+  - 11.2.0
+  - 14.3.0
+  - 14.3.0
+
+zip_keys:
+  -
+    - c_compiler_version
+    - cxx_compiler_version
+    - cuda_compiler_version
