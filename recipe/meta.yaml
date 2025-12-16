@@ -63,3 +63,4 @@ extra:
     - conda-forge/cuda
     - jakirkham
     - leofang
+    - askat
