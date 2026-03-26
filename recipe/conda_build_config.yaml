@@ -1,0 +1,5 @@
+# NCCL v2.25.1-1 officially supports up to CUDA 12.8, but it compiles with CUDA 12.9 without any issues.#
+# Reference: https://docs.nvidia.com/deeplearning/nccl/release-notes/rel_2-25-1.html#rel_2-25-1
+# Since "cuda-version" pin expands to ">=12,<13.0a0", we use CUDA 12.9 only for the build.
+cuda_compiler_version:
+  - "12.9"
