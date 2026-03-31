@@ -1,23 +1,5 @@
-# nccl supports CUDA enhanced compatibility, but CUDA 12.4 won't support GCC >= 13
-# So, keep CUDA 12.4 for GCC 11.2.0+ compatibility
-# Use latest CUDA 12.x and 13.x for GCC 14.3.0+ compatibility
+# Latest versions of NCCL officially supports CUDA 12.x and 13.x
+# Reference: https://docs.nvidia.com/deeplearning/nccl/release-notes/rel_2-29-3.html#rel_2-29-3
 cuda_compiler_version:
-  - 12.4
-  - 12.8
-  - 13.0
-
-c_compiler_version:
-  - 11.2.0
-  - 14.3.0
-  - 14.3.0
-
-cxx_compiler_version:
-  - 11.2.0
-  - 14.3.0
-  - 14.3.0
-
-zip_keys:
-  -
-    - c_compiler_version
-    - cxx_compiler_version
-    - cuda_compiler_version
+  - "12.9"
+  - "13.1"

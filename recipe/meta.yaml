@@ -1,5 +1,5 @@
 {% set name = "nccl" %}
-{% set version = "2.28.9-1" %}
+{% set version = "2.29.3-1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,18 +7,21 @@ package:
 
 source:
   url: https://github.com/NVIDIA/nccl/archive/v{{ version }}.tar.gz
-  sha256: f349860336c6b7fb97b22bed9c729142f3531a0e82826c1204d01e44af8b9cb9
+  sha256: d1dffc5e9dd059985704f98ff3d8b7e6cf62d20c10a181d427a4e3233f8148f1
   patches:
     - 0001-use-conda-ar-not-system.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [not linux]
   ignore_run_exports:
-    # ignore `cuda-version` constraint in CUDA 12+ as this supports CUDA Enhanced Compatibility.
+    # Using this section in recipes is usually not recommended, but necessary due to
+    # CUDA Compatibility support. That means, this package can support a version pin
+    # like "cuda-version >=12,<13.0a0".
+    # Reference: https://docs.nvidia.com/deploy/cuda-compatibility/
+    # Basically, adding "cuda-version" to this section will remove "cuda-version >=12.9,<13.0a0"
+    # from the runtime dependencies, and leave "cuda-version >=12,<13.0a0" only.
     - cuda-version
-  ignore_run_exports_from:
-    - {{ compiler("cuda") }}
   run_exports:
     # xref: https://github.com/NVIDIA/nccl/issues/218
     - {{ pin_subpackage(name, max_pin="x") }}
@@ -47,14 +50,12 @@ about:
   license_family: BSD
   license_file: LICENSE.txt
   summary: Optimized primitives for collective multi-GPU communication
-
   description: |
     The NVIDIA Collective Communications Library (NCCL) implements multi-GPU
     and multi-node collective communication primitives that are performance
     optimized for NVIDIA GPUs. NCCL provides routines such as all-gather,
     all-reduce, broadcast, reduce, reduce-scatter, that are optimized to
     achieve high bandwidth over PCIe and NVLink high-speed interconnect.
-
   doc_url: https://docs.nvidia.com/deeplearning/sdk/nccl-developer-guide/docs/index.html
   dev_url: https://github.com/NVIDIA/nccl
 
