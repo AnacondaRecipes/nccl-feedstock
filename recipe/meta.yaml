@@ -1,5 +1,5 @@
 {% set name = "nccl" %}
-{% set version = "2.29.3-1" %}
+{% set version = "2.30.3-1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/NVIDIA/nccl/archive/v{{ version }}.tar.gz
-  sha256: d1dffc5e9dd059985704f98ff3d8b7e6cf62d20c10a181d427a4e3233f8148f1
+  sha256: e86c3d653ace400f8b7dd0a41ca7443fbd1392ac0b02895faf1185c44af75397
   patches:
     - 0001-use-conda-ar-not-system.patch
 
