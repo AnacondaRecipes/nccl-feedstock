@@ -34,7 +34,8 @@ requirements:
     - {{ compiler("cuda") }}
     - arm-variant * {{ arm_variant_type }}  # [linux and aarch64]
     - clang 21.*  # [(cuda_compiler_version or "").startswith("12")]
-    - llvm-tools  # [(cuda_compiler_version or "").startswith("12")]
+    - clang 22.*  # [(cuda_compiler_version or "").startswith("13")]
+    - llvm-tools
     - make
   host:
     - cuda-version {{ cuda_compiler_version }}
@@ -44,9 +45,9 @@ requirements:
 test:
   commands:
     - test -f "${PREFIX}/include/nccl.h"
-    - test -f "${PREFIX}/include/nccl_device_wrapper.h"  # [(cuda_compiler_version or "").startswith("12")]
+    - test -f "${PREFIX}/include/nccl_device_wrapper.h"
     - test -f "${PREFIX}/lib/libnccl.so"
-    - test -f "${PREFIX}/lib/libnccl_device.bc"          # [(cuda_compiler_version or "").startswith("12")]
+    - test -f "${PREFIX}/lib/libnccl_device.bc"
     - test ! -f "${PREFIX}/lib/libnccl_static.a"
 
 about:
