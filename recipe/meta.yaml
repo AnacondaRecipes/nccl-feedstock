@@ -50,6 +50,11 @@ test:
   source_files:
     - nccl_tests/
   requires:
+    # nccl-tests apps require compilation
+    # TODO: convert nccl-tests in a separate output, but do not publish it
+    - {{ stdlib("c") }}
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
     - {{ compiler("cuda") }}
     - make
   commands:
