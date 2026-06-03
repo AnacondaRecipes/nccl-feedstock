@@ -7,9 +7,9 @@ package:
 
 source:
   - url: https://github.com/NVIDIA/nccl/archive/v{{ version }}.tar.gz
-  sha256: fe12cb244a4aea4c802d0a18d1072e10f102fc39c2530a8251c2abdaeea9ecba
-  patches:
-    - 0001-use-conda-ar-not-system.patch
+    sha256: fe12cb244a4aea4c802d0a18d1072e10f102fc39c2530a8251c2abdaeea9ecba
+    patches:
+      - 0001-use-conda-ar-not-system.patch
   - git_url: https://github.com/NVIDIA/nccl-tests.git
     git_rev: 632ad398cf7a4707f58d2661e491a4449a29b3bc
     folder: nccl_tests
@@ -50,8 +50,8 @@ test:
   source_files:
     - nccl_tests/
   requires:
+    - {{ compiler("cuda") }}
     - make
-    - {{ compiler("cuda") }}  # provides nvcc
   commands:
     # Test if the NCCL library artifacts exist
     - test -f "${PREFIX}/include/nccl.h"
