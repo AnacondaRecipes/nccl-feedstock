@@ -6,10 +6,13 @@ package:
   version: {{ version|replace("-", ".") }}
 
 source:
-  url: https://github.com/NVIDIA/nccl/archive/v{{ version }}.tar.gz
+  - url: https://github.com/NVIDIA/nccl/archive/v{{ version }}.tar.gz
   sha256: fe12cb244a4aea4c802d0a18d1072e10f102fc39c2530a8251c2abdaeea9ecba
   patches:
     - 0001-use-conda-ar-not-system.patch
+  - git_url: https://github.com/NVIDIA/nccl-tests.git
+    git_rev: 632ad398cf7a4707f58d2661e491a4449a29b3bc
+    folder: nccl_tests
 
 build:
   number: 0
@@ -37,18 +40,33 @@ requirements:
     - clang 22.*  # [(cuda_compiler_version or "").startswith("13")]
     - llvm-tools
     - make
+    - git
   host:
     - cuda-version {{ cuda_compiler_version }}
   run:
     - {{ pin_compatible("cuda-version", min_pin="x", max_pin="x") }}
 
 test:
+  source_files:
+    - nccl_tests/
+  requires:
+    - make
+    - {{ compiler("cuda") }}  # provides nvcc
   commands:
+    # Test if the NCCL library artifacts exist
     - test -f "${PREFIX}/include/nccl.h"
     - test -f "${PREFIX}/include/nccl_device_wrapper.h"
     - test -f "${PREFIX}/lib/libnccl.so"
     - test -f "${PREFIX}/lib/libnccl_device.bc"
     - test ! -f "${PREFIX}/lib/libnccl_static.a"
+    # Build nccl-tests to validate compilation
+    - cd nccl_tests && make NCCL_HOME=${PREFIX} -j${CPU_COUNT}
+    # Verify test binaries are built
+    - test -f "nccl_tests/build/all_reduce_perf"
+    - test -f "nccl_tests/build/all_gather_perf"
+    - test -f "nccl_tests/build/reduce_perf"
+    # Run nccl-tests
+    - cd nccl_tests && ./build/all_reduce_perf -b 8 -e 256M -f 2
 
 about:
   home: https://developer.nvidia.com/nccl
