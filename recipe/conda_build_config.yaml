@@ -2,7 +2,8 @@ arm_variant_type:  # [linux and aarch64]
   - sbsa           # [linux and aarch64]
 
 # Latest versions of NCCL officially supports CUDA 12.x and 13.x
-# Reference: https://docs.nvidia.com/deeplearning/nccl/release-notes/rel_2-29-3.html#rel_2-29-3
+# Reference: https://docs.nvidia.com/deeplearning/nccl/release-notes/rel_2-30-7.html#rel_2-30-7
+# See CF -> ".ci_support" directory for more details
 cuda_compiler_version:
   - 12.9
-  - 13.1
+  - 13.3
