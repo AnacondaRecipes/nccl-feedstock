@@ -1,8 +1,5 @@
 anaconda_config_version: 1
 upstream_sources:
-  - github:
-      identifier: NVIDIA/nccl
-      use_max_tag: true
-      from_pattern: ^v?(\d+)\.(\d+)\.(\d+)-(\d+)$
-      to_pattern: \1.\2.\3.\4
-      exclude_regex: (?i)^(?=.*(?:(?<=\d)rc\d*|(?<=\d)dev\d+|(?:^|[-._])(?:alpha|beta|gamma|pre|preview)(?:\d+)?|[-._]rc\d+|(?:^|[-._])dev\d+|(?:\d+\.)+\d+[ab]\d*)).+$
+  - webpage:
+      url: https://api.anaconda.org/package/conda-forge/nccl
+      regex: '"version":\s*"([^"]+)"'
