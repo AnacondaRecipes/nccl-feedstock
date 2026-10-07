@@ -52,8 +52,8 @@ test:
 
 about:
   home: https://developer.nvidia.com/nccl
-  license: BSD-3-Clause
-  license_family: BSD
+  license: Apache-2.0 AND BSD-3-Clause
+  license_family: Other
   license_file: LICENSE.txt
   summary: Optimized primitives for collective multi-GPU communication
   description: |
