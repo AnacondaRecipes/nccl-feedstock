@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -exo pipefail
 
 [[ ${target_platform} == "linux-64" ]] && targetsDir="targets/x86_64-linux"
 [[ ${target_platform} == "linux-ppc64le" ]] && targetsDir="targets/ppc64le-linux"
@@ -59,8 +59,7 @@ CUDA_INC="$BUILD_PREFIX/$targetsDir/include"
 # build env. Listing it as a build: dependency breaks cross-compilation for linux-aarch64
 touch "$BUILD_PREFIX/$targetsDir/include/curand_mtgp32_kernel.h"
 
-# https://github.com/conda-forge/nccl-feedstock/issues/159
-make -j$CPU_COUNT pkg.txz.build EMIT_LLVM_IR=1 \
+make -j${CPU_COUNT} pkg.txz.build NCCL_EMIT_LLVM_IR=1 \
   CUDA_HOME="$BUILD_PREFIX" \
   CUDA_INC="$CUDA_INC" \
   NVCC="$BUILD_PREFIX/bin/nvcc"
